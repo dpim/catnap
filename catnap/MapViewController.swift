@@ -35,7 +35,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         self.centerButton.isHidden = true
         self.isSet = false
         self.locationManager = CLLocationManager()
-        self.locationManager?.requestWhenInUseAuthorization()
+        self.locationManager?.requestAlwaysAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager?.delegate = self
             self.locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
@@ -55,7 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         if let location = self.location {
             //ask for notificaitons
             askForNotifications()
-            let region = CLCircularRegion(center: location.coordinate, radius: location.radius, identifier: "destination")
+            let region = CLCircularRegion(center: location.coordinate, radius: location.radius*2, identifier: "destination")
             self.locationManager?.startMonitoring(for: region)
             setNotifications(region: region)
         }
@@ -92,19 +92,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         content.title = "Wake up!"
         content.body = "You're at your destination"
         content.sound = UNNotificationSound.default()
-        let trigger = UNLocationNotificationTrigger(region:region, repeats:true)
+        //let trigger = UNLocationNotificationTrigger(region:region, repeats:true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
         let delete = UNNotificationAction(identifier: "DeleteAction",
                                                 title: "Delete", options: [.destructive])
         let category = UNNotificationCategory(identifier: "actions", actions: [delete], intentIdentifiers: [], options: [])
         center.setNotificationCategories([category])
         content.categoryIdentifier = "CatNapCategory"
         let identifier = "CatNapNotification"
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-        center.add(request, withCompletionHandler: { (error) in
-            if let error = error {
-                print(error)
-            }
-        })
+        for _ in 1...5 {
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            center.add(request, withCompletionHandler: { (error) in
+                if let error = error {
+                    print(error)
+                }
+            })
+        }
     }
     
     func didCancelLocation(){
@@ -171,9 +174,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("hurr2")
+        print("entered1")
         if region is CLCircularRegion {
-            print("entered")
+            print("entered2")
         }
     }
     

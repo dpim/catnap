@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Catnap needs to access your location to notify you when you have reached your destination</string>
+	<key>NSLocationUsageDescription</key>
 	<string>Catnap needs to access your location to notify you when you have reached your destination</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
