@@ -8,10 +8,13 @@
 
 import MapKit
 import UIKit
+import CoreLocation
+import UserNotifications
+
 let regionRadius: CLLocationDistance = 500
 let degreeDelta: CLLocationDegrees = 0.05
 
-class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate, CLLocationManagerDelegate {
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var location: Location?
     @IBOutlet var statusLabel: UILabel!
@@ -20,14 +23,24 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     var isSet: Bool?
     var circle: MKCircle?
+    var locationManager: CLLocationManager?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self
+        self.mapView.showsCompass = false
+        self.mapView.showsUserLocation = true
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.view.addGestureRecognizer(longPressGestureRecognizer)
         self.centerButton.isHidden = true
         self.isSet = false
+        self.locationManager = CLLocationManager()
+        self.locationManager?.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            self.locationManager?.delegate = self
+            self.locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            self.locationManager?.startUpdatingLocation()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,6 +52,59 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         self.statusLabel.text = "Alarm set"
         self.actionButton.setTitle("Cancel", for: .normal)
         self.isSet = true
+        if let location = self.location {
+            //ask for notificaitons
+            askForNotifications()
+            let region = CLCircularRegion(center: location.coordinate, radius: location.radius, identifier: "destination")
+            self.locationManager?.startMonitoring(for: region)
+            setNotifications(region: region)
+        }
+    }
+    
+    func askForNotifications(){
+        let center = UNUserNotificationCenter.current()
+        let options: UNAuthorizationOptions = [.alert, .sound];
+        center.requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Something went wrong")
+            }
+        }
+    }
+    
+    func setNotifications(region: CLCircularRegion){
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings{ (settings) in
+            if settings.authorizationStatus == .authorized {
+                self.createNotifications(region: region);
+            } else {
+                //show error message alert
+                let alert = UIAlertController(title: "Couldn't set alarm", message: "We need notifications access to let you know when you're at your destination", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func createNotifications(region: CLCircularRegion){
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = "Wake up!"
+        content.body = "You're at your destination"
+        content.sound = UNNotificationSound.default()
+        let trigger = UNLocationNotificationTrigger(region:region, repeats:true)
+        let delete = UNNotificationAction(identifier: "DeleteAction",
+                                                title: "Delete", options: [.destructive])
+        let category = UNNotificationCategory(identifier: "actions", actions: [delete], intentIdentifiers: [], options: [])
+        center.setNotificationCategories([category])
+        content.categoryIdentifier = "CatNapCategory"
+        let identifier = "CatNapNotification"
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        center.add(request, withCompletionHandler: { (error) in
+            if let error = error {
+                print(error)
+            }
+        })
     }
     
     func didCancelLocation(){
@@ -47,6 +113,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         self.actionButton.setTitle("Set", for: .normal)
         self.isSet = false
         self.location = nil
+        //cancel notifications
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
         removeCircle()
     }
     
@@ -59,7 +128,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     func handleLongPress(sender: UILongPressGestureRecognizer)
     {
         //remove overlay if exists
-        removeCircle()
+        didCancelLocation()
         let pressCenter = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
         self.location = Location(title: "alarm", radius: regionRadius, coordinate: pressCenter)
         //replace overlay
@@ -67,7 +136,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         mapView.add(self.circle!)
         //center
         mapView.setRegion(MKCoordinateRegionMake(pressCenter, MKCoordinateSpanMake(degreeDelta, degreeDelta)), animated: true)
-        //show popup - confirm/favorite
     }
 
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -98,6 +166,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             return view
         } else {
             return nil
+        }
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("hurr2")
+        if region is CLCircularRegion {
+            print("entered")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            print("exited")
         }
     }
     
