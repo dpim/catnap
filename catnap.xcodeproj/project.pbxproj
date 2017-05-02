@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		677632C21EB847E0008F7F80 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 677632C11EB847E0008F7F80 /* logo@3x.png */; };
+		677632C41EB847E6008F7F80 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 677632C31EB847E6008F7F80 /* logo@2x.png */; };
 		67AA53431EB552B000B56F30 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA53421EB552B000B56F30 /* AppDelegate.swift */; };
 		67AA53451EB552B000B56F30 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA53441EB552B000B56F30 /* MapViewController.swift */; };
 		67AA53471EB552B000B56F30 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA53461EB552B000B56F30 /* FavoritesViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		677632C11EB847E0008F7F80 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
+		677632C31EB847E6008F7F80 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		67AA533F1EB552B000B56F30 /* catnap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67AA53421EB552B000B56F30 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		67AA53441EB552B000B56F30 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +46,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		677632C01EB8476A008F7F80 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				677632C31EB847E6008F7F80 /* logo@2x.png */,
+				677632C11EB847E0008F7F80 /* logo@3x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		67AA53361EB552B000B56F30 = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +80,7 @@
 				67AA53461EB552B000B56F30 /* FavoritesViewController.swift */,
 				67AA53481EB552B000B56F30 /* Main.storyboard */,
 				67AA534B1EB552B000B56F30 /* Assets.xcassets */,
+				677632C01EB8476A008F7F80 /* Images */,
 				67AA534D1EB552B000B56F30 /* LaunchScreen.storyboard */,
 				67AA53501EB552B000B56F30 /* Info.plist */,
 				67AA53591EB5572100B56F30 /* Location.swift */,
@@ -142,8 +156,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				677632C41EB847E6008F7F80 /* logo@2x.png in Resources */,
 				67AA534F1EB552B000B56F30 /* LaunchScreen.storyboard in Resources */,
 				67AA534C1EB552B000B56F30 /* Assets.xcassets in Resources */,
+				677632C21EB847E0008F7F80 /* logo@3x.png in Resources */,
 				67AA534A1EB552B000B56F30 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +338,7 @@
 				67AA53551EB552B000B56F30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

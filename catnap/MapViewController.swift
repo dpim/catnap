@@ -99,13 +99,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     func createNotifications(region: CLCircularRegion){
         let center = UNUserNotificationCenter.current()
-        print(region)
         let trigger = UNLocationNotificationTrigger(region:region, repeats:true)
         let delete = UNNotificationAction(identifier: "DeleteAction",
                                                 title: "Delete", options: [.destructive])
         let category = UNNotificationCategory(identifier: "CatNapCategory", actions: [delete], intentIdentifiers: [], options: [])
         center.setNotificationCategories([category])
-        for i in 1...5 {
+        for i in 1...3 {
             let content = UNMutableNotificationContent()
             content.title = "Wake up!"
             content.body = "You're at your destination"
@@ -122,7 +121,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     }
     
     func removeNotifications(){
-        for i in 1...5 {
+        for i in 1...3 {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["CatNapNotification\(i)"])
         }
     }
@@ -207,7 +206,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-            //do something
+            didCancelLocation()
         }
     }
     
