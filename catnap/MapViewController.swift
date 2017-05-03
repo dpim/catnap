@@ -21,6 +21,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     @IBOutlet var actionButton: UIButton!
     @IBOutlet var centerButton: UIButton!
     
+    var isNotified: Bool?
     var isZoomed: Bool?
     var isSet: Bool?
     var circle: MKCircle?
@@ -28,16 +29,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.mapView.delegate = self
-        self.mapView.showsCompass = false
-        self.mapView.showsUserLocation = true
+        if let _ = self.isSet {
+            //restored
+        } else {
+            self.mapView.delegate = self
+            self.mapView.showsCompass = false
+            self.mapView.showsUserLocation = true
+            self.centerButton.isHidden = true
+            self.isSet = false
+            self.isZoomed = false
+        }
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.view.addGestureRecognizer(longPressGestureRecognizer)
-        self.centerButton.isHidden = true
-        self.isSet = false
         self.locationManager = CLLocationManager()
         self.locationManager?.requestAlwaysAuthorization()
-        self.isZoomed = false
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager?.delegate = self
             self.locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
@@ -47,7 +52,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        removeNotifications()
+        if let notified = self.isNotified {
+            if (notified == true){
+                print("cancelling")
+                didCancelLocation()
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -200,7 +210,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
-            //do something
+            self.isNotified = true
         }
     }
     
@@ -210,6 +220,36 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         }
     }
     
+    override func encodeRestorableState(with coder: NSCoder) {
+        if let isSet = self.isSet {
+            coder.encode(isSet, forKey: "isSet")
+        }
+        if let location = self.location {
+            coder.encode(Double(location.coordinate.latitude), forKey: "latitude")
+            coder.encode(Double(location.coordinate.longitude), forKey: "longitude")
+            coder.encode(Int(location.radius), forKey: "radius")
+        }
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        self.isSet = coder.decodeBool(forKey: "isSet")
+        let latitude = coder.decodeDouble(forKey: "latitude")
+        let longitude = coder.decodeDouble(forKey: "longitude")
+        let radius = coder.decodeInteger(forKey: "radius")
+        self.location = Location(title: "circle", radius: CLLocationDistance(radius), coordinate: CLLocationCoordinate2D(latitude: Double(latitude), longitude: Double(longitude)))
+        super.decodeRestorableState(with: coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        if let _ = self.location {
+            self.circle = MKCircle(center: self.location!.coordinate, radius: self.location!.radius)
+            mapView.add(self.circle!)
+            mapView.setRegion(MKCoordinateRegionMake(self.location!.coordinate, MKCoordinateSpanMake(degreeDelta, degreeDelta)), animated: true)
+            didSelectLocation()
+        }
+    }
+
     @IBAction func actionButtonPressed(sender: UIButton) {
         if (self.location != nil) {
             if let set = self.isSet {
