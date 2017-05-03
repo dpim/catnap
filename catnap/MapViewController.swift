@@ -237,7 +237,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
         let latitude = coder.decodeDouble(forKey: "latitude")
         let longitude = coder.decodeDouble(forKey: "longitude")
         let radius = coder.decodeInteger(forKey: "radius")
-        self.location = Location(title: "circle", radius: CLLocationDistance(radius), coordinate: CLLocationCoordinate2D(latitude: Double(latitude), longitude: Double(longitude)))
+        self.location = Location(title: "circle", radius: CLLocationDistance(radius),
+                                 coordinate:
+            CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
         super.decodeRestorableState(with: coder)
     }
     
