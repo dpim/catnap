@@ -234,7 +234,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func decodeRestorableState(with coder: NSCoder) {
         self.isSet = coder.decodeBool(forKey: "isSet")
-        print("is set: \(self.isSet)")
         let latitude = coder.decodeDouble(forKey: "latitude")
         let longitude = coder.decodeDouble(forKey: "longitude")
         let radius = coder.decodeInteger(forKey: "radius")
