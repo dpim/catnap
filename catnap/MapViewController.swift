@@ -234,6 +234,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     
     override func decodeRestorableState(with coder: NSCoder) {
         self.isSet = coder.decodeBool(forKey: "isSet")
+        print("is set: \(self.isSet)")
         let latitude = coder.decodeDouble(forKey: "latitude")
         let longitude = coder.decodeDouble(forKey: "longitude")
         let radius = coder.decodeInteger(forKey: "radius")
@@ -244,11 +245,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
     }
     
     override func applicationFinishedRestoringState() {
-        if let _ = self.location {
-            self.circle = MKCircle(center: self.location!.coordinate, radius: self.location!.radius)
-            mapView.add(self.circle!)
-            mapView.setRegion(MKCoordinateRegionMake(self.location!.coordinate, MKCoordinateSpanMake(degreeDelta, degreeDelta)), animated: true)
-            didSelectLocation()
+        if let set = self.isSet {
+            if (set == true){
+                self.circle = MKCircle(center: self.location!.coordinate, radius: self.location!.radius)
+                mapView.add(self.circle!)
+                mapView.setRegion(MKCoordinateRegionMake(self.location!.coordinate, MKCoordinateSpanMake(degreeDelta, degreeDelta)), animated: true)
+                didSelectLocation()
+            }
         }
     }
 
