@@ -125,6 +125,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             center.add(request, withCompletionHandler: { (error) in
                 if let error = error {
                     print(error)
+                } else {
+                    //successful
                 }
             })
         }
