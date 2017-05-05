@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catnap/MapViewController.swift"
-            timestampString = "515644097.345467"
+            timestampString = "515644463.766065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "actionButtonPressed(sender:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catnap/MapViewController.swift"
-            timestampString = "515644097.345467"
+            timestampString = "515644463.766065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "locationManager(_:didExitRegion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "catnap/MapViewController.swift"
-            timestampString = "515644097.345467"
+            timestampString = "515644463.766065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "encodeRestorableState(with:)"
             landmarkType = "7">
          </BreakpointContent>
