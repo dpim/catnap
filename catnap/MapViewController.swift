@@ -122,6 +122,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIGestureRecognize
             content.categoryIdentifier = "CatNapCategory"
             let identifier = "CatNapNotification\(i)"
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             center.add(request, withCompletionHandler: { (error) in
                 if let error = error {
                     print(error)

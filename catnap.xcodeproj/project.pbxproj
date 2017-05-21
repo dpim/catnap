@@ -20,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		674BCC8A1ED0D4D1007E82AB /* catnap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = catnap.entitlements; sourceTree = "<group>"; };
 		677632C11EB847E0008F7F80 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
 		677632C31EB847E6008F7F80 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		67AA533F1EB552B000B56F30 /* catnap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +76,7 @@
 		67AA53411EB552B000B56F30 /* catnap */ = {
 			isa = PBXGroup;
 			children = (
+				674BCC8A1ED0D4D1007E82AB /* catnap.entitlements */,
 				67AA53421EB552B000B56F30 /* AppDelegate.swift */,
 				67AA53441EB552B000B56F30 /* MapViewController.swift */,
 				67AA53461EB552B000B56F30 /* FavoritesViewController.swift */,
@@ -130,6 +132,14 @@
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = LRM98E7ZJM;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

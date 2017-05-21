@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // Play sound and show alert to the user
-        completionHandler([.alert,.sound])
+        completionHandler([.alert,.sound, .badge])
         //cancel selection
         if let viewController = window?.rootViewController {
             if let mapViewController = viewController as? MapViewController {
